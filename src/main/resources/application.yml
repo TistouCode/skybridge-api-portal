@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: api-portal
+
+airfrance:
+  api:
+    base-url: https://api.airfranceklm.com
+    key: ${AFKL_API_KEY:}
