@@ -1,0 +1,11 @@
+package com.skybridge.api_portal.airfrance.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record PageInfo(
+        Integer pageNumber,
+        Integer pageSize,
+        Integer fullCount,
+        Integer totalPages
+) {}
