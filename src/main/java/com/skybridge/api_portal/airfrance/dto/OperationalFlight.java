@@ -1,6 +1,7 @@
 package com.skybridge.api_portal.airfrance.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public record OperationalFlight(
         LocalDate flightScheduleDate,
         Airline airline,
         String flightStatusPublic,
+        String flightStatusPublicLangTransl,
         List<String> route,
         List<FlightLeg> flightLegs
 ) {}
