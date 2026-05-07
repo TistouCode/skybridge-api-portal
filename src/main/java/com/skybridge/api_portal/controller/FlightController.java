@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.OffsetDateTime;
 
 @RestController
-@RequestMapping("/flights")
+@RequestMapping("/api/v1/flights")
 public class FlightController {
 
     private final FlightStatusService flightStatusService;
