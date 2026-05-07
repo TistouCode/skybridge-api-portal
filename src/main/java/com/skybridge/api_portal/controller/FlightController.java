@@ -1,7 +1,7 @@
 package com.skybridge.api_portal.controller;
 
-import com.skybridge.api_portal.airfrance.dto.FlightStatusResponse;
-import com.skybridge.api_portal.airfrance.service.FlightStatusService;
+import com.skybridge.api_portal.flight.dto.FlightPage;
+import com.skybridge.api_portal.flight.service.FlightService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,20 +19,20 @@ import java.time.OffsetDateTime;
 @Tag(name = "Flights", description = "Flight status data sourced from the Air France/KLM open data API")
 public class FlightController {
 
-    private final FlightStatusService flightStatusService;
+    private final FlightService flightService;
 
-    public FlightController(FlightStatusService flightStatusService) {
-        this.flightStatusService = flightStatusService;
+    public FlightController(FlightService flightService) {
+        this.flightService = flightService;
     }
 
     @GetMapping
     @Operation(
             summary = "List flights within a time range",
-            description = "Returns operational flights whose scheduled times fall within the given range.")
+            description = "Returns a paginated list of flights whose scheduled times fall within the given range.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Flights returned successfully")
     })
-    public FlightStatusResponse getFlights(
+    public FlightPage getFlights(
             @Parameter(
                     description = "Inclusive start of the time range (ISO-8601 with offset)",
                     example = "2026-05-06T00:00:00+02:00")
@@ -40,7 +40,11 @@ public class FlightController {
             @Parameter(
                     description = "Exclusive end of the time range (ISO-8601 with offset)",
                     example = "2026-05-06T04:00:00+02:00")
-            @RequestParam OffsetDateTime endRange) {
-        return flightStatusService.getFlights(startRange, endRange);
+            @RequestParam OffsetDateTime endRange,
+            @Parameter(description = "Zero-based page index", example = "0")
+            @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Page size (Air France caps at 100)", example = "50")
+            @RequestParam(defaultValue = "50") int size) {
+        return flightService.getFlights(startRange, endRange, page, size);
     }
 }
