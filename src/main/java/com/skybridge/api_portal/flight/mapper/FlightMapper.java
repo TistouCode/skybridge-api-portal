@@ -69,7 +69,7 @@ public class FlightMapper {
                 source.scheduledFlightDuration(),
                 toAircraftView(source.aircraft()),
                 computeDelayMinutes(source.arrivalDateTimeDifference()),
-                "CANCELLED".equals(source.legStatusPublic())
+                isCancelled(source.legStatusPublic())
         );
     }
 
@@ -139,6 +139,10 @@ public class FlightMapper {
 
     private static long computeDelayMinutes(Duration delay) {
         return delay == null ? 0L : delay.toMinutes();
+    }
+
+    private static boolean isCancelled(String airFranceStatus) {
+        return airFranceStatus != null && airFranceStatus.toUpperCase().contains("CANCEL");
     }
 
     private static FlightStatus mapStatus(String airFranceStatus) {
