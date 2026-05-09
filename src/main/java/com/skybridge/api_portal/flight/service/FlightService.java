@@ -20,6 +20,9 @@ public class FlightService {
     }
 
     public FlightPage getFlights(OffsetDateTime startRange, OffsetDateTime endRange, int page, int size) {
+        if (!startRange.isBefore(endRange)) {
+            throw new InvalidFlightSearchException("startRange must be strictly before endRange");
+        }
         FlightStatusResponse upstream = client.fetchFlights(startRange, endRange, page, size);
         return mapper.toFlightPage(upstream);
     }

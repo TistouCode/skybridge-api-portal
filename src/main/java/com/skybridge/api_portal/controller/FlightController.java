@@ -7,6 +7,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +19,7 @@ import java.time.OffsetDateTime;
 
 @RestController
 @RequestMapping("/api/v1/flights")
+@Validated
 @Tag(name = "Flights", description = "Flight status data sourced from the Air France/KLM open data API")
 public class FlightController {
 
@@ -42,9 +46,9 @@ public class FlightController {
                     example = "2026-05-06T04:00:00+02:00")
             @RequestParam OffsetDateTime endRange,
             @Parameter(description = "Zero-based page index", example = "0")
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "0") @Min(0) int page,
             @Parameter(description = "Page size (Air France caps at 100)", example = "50")
-            @RequestParam(defaultValue = "50") int size) {
+            @RequestParam(defaultValue = "50") @Min(1) @Max(100) int size) {
         return flightService.getFlights(startRange, endRange, page, size);
     }
 }
